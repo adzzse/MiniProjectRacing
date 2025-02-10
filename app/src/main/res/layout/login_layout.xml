@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0.8">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="117dp"
+            android:layout_marginEnd="123dp"
+            android:layout_marginBottom="37dp"
+            android:clickable="true"
+            android:fontFamily="monospace"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:text="Start"
+            android:textColor="#EF5F5D5D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTurtorial"
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+
+            android:layout_above="@+id/tvStart"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="86dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginBottom="56dp"
+            android:clickable="true"
+            android:fontFamily="monospace"
+            android:padding="10dp"
+            android:text="Turtorial"
+            android:textAlignment="center"
+            android:textColor="#EF5F5D5D"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="367dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="362dp"
+            android:hint="User Name"
+            android:padding="10dp"
+            android:textSize="30sp" />
+    </RelativeLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
