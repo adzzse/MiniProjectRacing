@@ -96,7 +96,8 @@ public class HomeRaceActivity extends AppCompatActivity {
                 sbHorse2.setProgress(0);
                 sbHorse3.setProgress(0);
                 sbHorse4.setProgress(0);
-                tvRaceResult.setText("Kết quả đua sẽ hiển thị tại đây");
+                tvRaceResult.setText("The race results will be displayed here");
+                etBetMoney.setText("");
             }
         });
 
@@ -104,6 +105,7 @@ public class HomeRaceActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tvRaceResult.setText("The race results will be displayed here");
                 // Lấy số tiền cược từ EditText
                 String betMoneyStr = etBetMoney.getText().toString();
                 if (betMoneyStr.isEmpty()) {
@@ -188,9 +190,9 @@ public class HomeRaceActivity extends AppCompatActivity {
 
     private String getWinMessage(String selectedHorse, String winningHorse, int betMoney, boolean isWin, int winAmount) {
         if (isWin) {
-            return "Congratulations! You chose " + winningHorse + " and won! \n You won " + winAmount + " \n Your current balance is: " + (currentMoney);
+            return "Congratulations! You chose " + winningHorse + " and won! \n You won " + winAmount*2 + " \n Your current balance is: " + (currentMoney);
         } else {
-            return selectedHorse + " that you chose did not win. Try again!";
+            return selectedHorse + " that you chose did not win. You lost " + winAmount + "\n Try again!";
         }
     }
 
