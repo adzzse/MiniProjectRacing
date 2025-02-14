@@ -3,31 +3,41 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="Logout" />
+
     <TextView
         android:id="@+id/tv_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="43dp"
         android:text="Money: 1000"
         android:textStyle="bold" />
+
+    <!-- Horse seekbars -->
 
     <Spinner
         android:id="@+id/spinner_horses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_money"
-        android:layout_marginTop="8dp" />
-
-    <!-- Horse seekbars -->
+        android:layout_marginTop="16dp" />
 
     <EditText
         android:id="@+id/et_bet_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinner_horses"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="-45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-23dp"
         android:layout_toEndOf="@+id/spinner_horses"
         android:hint="Nhập số tiền cược"
         android:inputType="number" />
@@ -36,44 +46,44 @@
         android:id="@+id/sb_horse1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="0"
         android:layout_below="@id/et_bet_money"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="46dp"
+        android:max="100"
+        android:progress="0" />
 
     <SeekBar
         android:id="@+id/sb_horse2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="0"
         android:layout_below="@id/sb_horse1"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="46dp"
+        android:max="100"
+        android:progress="0" />
 
     <SeekBar
         android:id="@+id/sb_horse3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="0"
         android:layout_below="@id/sb_horse2"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="46dp"
+        android:max="100"
+        android:progress="0" />
 
     <SeekBar
         android:id="@+id/sb_horse4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
-        android:progress="0"
         android:layout_below="@id/sb_horse3"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="46dp"
+        android:max="100"
+        android:progress="0" />
 
     <Button
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sb_horse4"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="53dp"
         android:text="Start" />
 
     <Button
@@ -81,8 +91,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sb_horse4"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="53dp"
         android:layout_toEndOf="@+id/btn_start"
         android:layout_weight="1"
         android:text="Top up" />
@@ -92,20 +102,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sb_horse4"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="54dp"
         android:layout_toEndOf="@+id/btn_deposit"
         android:layout_weight="1"
         android:text="Tutorial" />
 
     <Button
         android:id="@+id/btn_reset"
-        android:layout_width="112dp"
-        android:layout_height="51dp"
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/sb_horse4"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="54dp"
         android:layout_marginEnd="0dp"
         android:layout_toEndOf="@+id/btn_guide"
         android:layout_weight="1"
@@ -113,12 +123,15 @@
 
     <TextView
         android:id="@+id/tv_race_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Kết quả"
+        android:layout_width="393dp"
+        android:layout_height="98dp"
         android:layout_below="@id/btn_start"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="2dp"
+        android:text="Result"
+        android:textStyle="bold" />
 
 </RelativeLayout>

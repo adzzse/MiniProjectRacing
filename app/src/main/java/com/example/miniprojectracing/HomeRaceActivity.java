@@ -1,6 +1,7 @@
 package com.example.miniprojectracing;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +22,9 @@ public class HomeRaceActivity extends AppCompatActivity {
     private EditText etBetMoney;
     private Spinner spinnerHorses;
     private SeekBar sbHorse1, sbHorse2, sbHorse3, sbHorse4;
-    private Button btnStart, btnDeposit, btnGuide, btnReset;
+    private Button btnStart, btnDeposit, btnGuide, btnReset, btnLogout;
 
-    private int currentMoney = 1000; // Số tiền giả định ban đầu
+    private int currentMoney = 0; // Số tiền giả định ban đầu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class HomeRaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_race);
 
         // Kết nối các thành phần UI
+        btnLogout = findViewById(R.id.btn_logout);
         tvMoney = findViewById(R.id.tv_money);
         etBetMoney = findViewById(R.id.et_bet_money);
         spinnerHorses = findViewById(R.id.spinner_horses);
@@ -44,7 +47,7 @@ public class HomeRaceActivity extends AppCompatActivity {
         tvRaceResult = findViewById(R.id.tv_race_result);
 
         // Hiển thị số tiền hiện có
-        tvMoney.setText("Money: " + currentMoney);
+        tvMoney.setText("Số tiền: " + currentMoney);
 
         // Populate spinner with horse names
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -60,6 +63,21 @@ public class HomeRaceActivity extends AppCompatActivity {
                 startActivityForResult(depositIntent, 1);
             }
         });
+
+        //Đăng xuất tài khoản
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences("user_data", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
+                Intent loginIntent = new Intent(HomeRaceActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+                finish();
+            }
+        });
+
 
         // Chuyển đến màn hình hướng dẫn
         btnGuide.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +104,22 @@ public class HomeRaceActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Lấy số tiền cược từ EditText
+                String betMoneyStr = etBetMoney.getText().toString();
+                if (betMoneyStr.isEmpty()) {
+                    Toast.makeText(HomeRaceActivity.this, "Input the bet amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int betMoney = Integer.parseInt(betMoneyStr);
+                // Kiểm tra nếu số tiền cược hợp lệ
+                if (betMoney > currentMoney) {
+                    Toast.makeText(HomeRaceActivity.this, "Insufficient bet amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // Trừ số tiền cược khỏi số tiền hiện có
+                currentMoney -= betMoney;
+                tvMoney.setText("Money: " + currentMoney); // Cập nhật số tiền hiện tại
+
                 final Handler handler = new Handler();
                 final Runnable updateProgress = new Runnable() {
                     @Override
@@ -103,34 +137,63 @@ public class HomeRaceActivity extends AppCompatActivity {
                                     Math.max(sbHorse3.getProgress(), sbHorse4.getProgress()));
 
                             String selectedHorse = spinnerHorses.getSelectedItem().toString();
+                            String winMessage = "";
+                            boolean isWin = false;
+                            int winAmount = betMoney;  // Số tiền thắng cược (nếu bạn có thêm tỷ lệ cược, hãy thay đổi giá trị này)
 
                             if (maxProgress == sbHorse1.getProgress()) {
-                                tvRaceResult.setText("Ngựa 1 thắng! " + getWinMessage(selectedHorse, "Ngựa 1"));
+                                if (selectedHorse.equals("Ngựa 1")) {
+                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    isWin = true;
+                                }
+                                winMessage = getWinMessage(selectedHorse, "Ngựa 1", betMoney, isWin, winAmount);
                             } else if (maxProgress == sbHorse2.getProgress()) {
-                                tvRaceResult.setText("Ngựa 2 thắng! " + getWinMessage(selectedHorse, "Ngựa 2"));
+                                if (selectedHorse.equals("Ngựa 2")) {
+                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    isWin = true;
+                                }
+                                winMessage = getWinMessage(selectedHorse, "Ngựa 2", betMoney, isWin, winAmount);
                             } else if (maxProgress == sbHorse3.getProgress()) {
-                                tvRaceResult.setText("Ngựa 3 thắng! " + getWinMessage(selectedHorse, "Ngựa 3"));
+                                if (selectedHorse.equals("Ngựa 3")) {
+                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    isWin = true;
+                                }
+                                winMessage = getWinMessage(selectedHorse, "Ngựa 3", betMoney, isWin, winAmount);
                             } else {
-                                tvRaceResult.setText("Ngựa 4 thắng! " + getWinMessage(selectedHorse, "Ngựa 4"));
+                                if (selectedHorse.equals("Ngựa 4")) {
+                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    isWin = true;
+                                }
+                                winMessage = getWinMessage(selectedHorse, "Ngựa 4", betMoney, isWin, winAmount);
                             }
+
+                            // Hiển thị kết quả
+                            tvRaceResult.setText(winMessage);
+                            tvMoney.setText("Money: " + currentMoney);
                         } else {
-                            // Continue updating progress every 100ms
+                            // Tiếp tục cập nhật mọi 100ms
                             handler.postDelayed(this, 100);
                         }
                     }
                 };
+                //Cập nhật lại seekbar
+                sbHorse1.setProgress(0);
+                sbHorse2.setProgress(0);
+                sbHorse3.setProgress(0);
+                sbHorse4.setProgress(0);
                 handler.post(updateProgress); // Start the race
             }
         });
     }
 
-    private String getWinMessage(String selectedHorse, String winningHorse) {
-        if (selectedHorse.equals(winningHorse)) {
-            return "Bạn đã chọn đúng ngựa thắng!";
+    private String getWinMessage(String selectedHorse, String winningHorse, int betMoney, boolean isWin, int winAmount) {
+        if (isWin) {
+            return "Congratulations! You chose " + winningHorse + " and won! \n You won " + winAmount + " \n Your current balance is: " + (currentMoney);
         } else {
-            return "Ngựa bạn chọn không thắng. Thử lại nào!";
+            return selectedHorse + " that you chose did not win. Try again!";
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
