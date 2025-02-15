@@ -1,5 +1,6 @@
 package com.example.miniprojectracing;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +30,7 @@ public class HomeRaceActivity extends AppCompatActivity {
     private TextView tvMoney, tvRaceResult;
     private EditText etBetMoney;
     private Spinner spinnerHorses;
-    private Button btnStart, btnDeposit, btnGuide, btnReset, btnHistory;
+    private Button btnStart, btnDeposit, btnGuide, btnReset, btnLogout, btnHistory;
     private int currentMoney = 1000; // Số tiền giả định ban đầu
 
     @Override
@@ -66,7 +67,9 @@ public class HomeRaceActivity extends AppCompatActivity {
         victorySound = MediaPlayer.create(this, R.raw.victory);
         loseSound = MediaPlayer.create(this, R.raw.lose);
         // Hiển thị số tiền hiện có
-        tvMoney.setText("Số tiền: " + currentMoney);
+        SharedPreferences sharedPreferences = getSharedPreferences("game_data", MODE_PRIVATE);
+        currentMoney = sharedPreferences.getInt("current_money", 1000); // Mặc định là 1000 nếu chưa có dữ liệu
+        tvMoney.setText("Money: " + currentMoney);
 
         // Populate spinner with horse names
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -89,6 +92,15 @@ public class HomeRaceActivity extends AppCompatActivity {
                 btnToggleSound.setImageResource(R.drawable.ic_sound_offf); // Cập nhật UI
             }
             isMuted = !isMuted; // Đảo trạng thái
+        });
+        //Lịch sử đua
+        btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent historyIntent = new Intent(HomeRaceActivity.this, HistoryActivity.class);
+                startActivity(historyIntent);
+                finish();
+            }
         });
         //Đăng xuất tài khoản
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -139,23 +151,26 @@ public class HomeRaceActivity extends AppCompatActivity {
                 tvRaceResult.setText("The race results will be displayed here");
                 etBetMoney.setText("");
 
-            // Đặt lại vị trí GIF
-            updateGifPosition(gifThumb1, sbHorse1.getProgress(), sbHorse1);
-            updateGifPosition(gifThumb2, sbHorse2.getProgress(), sbHorse2);
-            updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
-            updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer = MediaPlayer.create(HomeRaceActivity.this, R.raw.music);
-                mediaPlayer.setLooping(true);
-                mediaPlayer.start();
+                // Đặt lại vị trí GIF
+                updateGifPosition(gifThumb1, sbHorse1.getProgress(), sbHorse1);
+                updateGifPosition(gifThumb2, sbHorse2.getProgress(), sbHorse2);
+                updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
+                updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer = MediaPlayer.create(HomeRaceActivity.this, R.raw.music);
+                    mediaPlayer.setLooping(true);
+                    mediaPlayer.start();
+
+                }
             }
-        }});
+        });
 
         // Bắt đầu cuộc đua (giả lập đơn giản)
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tvRaceResult.setText("The race results will be displayed here");
+
                 // Lấy số tiền cược từ EditText
                 String betMoneyStr = etBetMoney.getText().toString();
                 if (betMoneyStr.isEmpty()) {
@@ -163,11 +178,13 @@ public class HomeRaceActivity extends AppCompatActivity {
                     return;
                 }
                 int betMoney = Integer.parseInt(betMoneyStr);
+
                 // Kiểm tra nếu số tiền cược hợp lệ
                 if (betMoney > currentMoney) {
                     Toast.makeText(HomeRaceActivity.this, "Insufficient bet amount", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 // Trừ số tiền cược khỏi số tiền hiện có
                 currentMoney -= betMoney;
                 tvMoney.setText("Money: " + currentMoney); // Cập nhật số tiền hiện tại
@@ -196,31 +213,36 @@ public class HomeRaceActivity extends AppCompatActivity {
 
                             String selectedHorse = spinnerHorses.getSelectedItem().toString();
                             String winMessage = "";
+                            String winningHorse = "";
                             boolean isWin = false;
-                            int winAmount = betMoney;  // Số tiền thắng cược (nếu bạn có thêm tỷ lệ cược, hãy thay đổi giá trị này)
+                            int winAmount = betMoney; // Số tiền thắng cược
 
                             if (maxProgress == sbHorse1.getProgress()) {
                                 if (selectedHorse.equals("Wheelchair 1")) {
-                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    currentMoney += winAmount * 2; // Cộng tiền thắng
                                     isWin = true;
+                                    winningHorse = "Wheelchair 1";
                                 }
                                 winMessage = getWinMessage(selectedHorse, "Wheelchair 1", betMoney, isWin, winAmount);
                             } else if (maxProgress == sbHorse2.getProgress()) {
                                 if (selectedHorse.equals("Wheelchair 2")) {
-                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    currentMoney += winAmount * 2;
                                     isWin = true;
+                                    winningHorse = "Wheelchair 2";
                                 }
                                 winMessage = getWinMessage(selectedHorse, "Wheelchair 2", betMoney, isWin, winAmount);
                             } else if (maxProgress == sbHorse3.getProgress()) {
                                 if (selectedHorse.equals("Wheelchair 3")) {
-                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    currentMoney += winAmount * 2;
                                     isWin = true;
+                                    winningHorse = "Wheelchair 3";
                                 }
                                 winMessage = getWinMessage(selectedHorse, "Wheelchair 3", betMoney, isWin, winAmount);
                             } else {
                                 if (selectedHorse.equals("Wheelchair 4")) {
-                                    currentMoney += winAmount*2; // Cộng tiền thắng
+                                    currentMoney += winAmount * 2;
                                     isWin = true;
+                                    winningHorse = "Wheelchair 4";
                                 }
                                 winMessage = getWinMessage(selectedHorse, "Wheelchair 4", betMoney, isWin, winAmount);
                             }
@@ -228,20 +250,17 @@ public class HomeRaceActivity extends AppCompatActivity {
                             // Hiển thị kết quả
                             tvRaceResult.setText(winMessage);
                             tvMoney.setText("Money: " + currentMoney);
+
+                            tvRaceResult.setText(winningHorse + " thắng! " + getWinMessage2(selectedHorse, winningHorse, isWin));
+                            HistoryActivity.updateRaceHistory(winningHorse);
+
                         } else {
-                            // Tiếp tục cập nhật mọi 100ms
                             handler.postDelayed(this, 100);
-
                         }
-
-                        tvRaceResult.setText(winningHorse + " thắng! " + getWinMessage(selectedHorse, winningHorse));
-                        HistoryActivity.updateRaceHistory(winningHorse);
-                    } else {
-                        handler.postDelayed(this, 100);
                     }
-
                 };
-                //Cập nhật lại seekbar
+
+                // Cập nhật lại seekbar
                 sbHorse1.setProgress(0);
                 sbHorse2.setProgress(0);
                 sbHorse3.setProgress(0);
@@ -250,7 +269,7 @@ public class HomeRaceActivity extends AppCompatActivity {
             }
         });
     }
-    private void updateGifPosition(GifImageView gif, int progress, SeekBar seekBar) {
+        public void updateGifPosition(GifImageView gif, int progress, SeekBar seekBar) {
         int seekBarWidth = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
         int newX = seekBar.getPaddingLeft() + (seekBarWidth * progress / seekBar.getMax());
         gif.setX(newX - (gif.getWidth() / 2));
@@ -271,6 +290,21 @@ public class HomeRaceActivity extends AppCompatActivity {
             return selectedHorse + " that you chose did not win. You lost " + winAmount + "\n Try again!";
         }
     }
+    private String getWinMessage2(String selectedHorse, String winningHorse, boolean isWin) {
+        if (isWin) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            victorySound.start();
+            return "Congratulations! You chose " + winningHorse + " and won!  \n Your current balance is: " + (currentMoney);
+        } else {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            loseSound.start();
+            return selectedHorse + " that you chose did not win. \n Try again!";
+        }
+    }
 
 
     @Override
@@ -288,5 +322,9 @@ public class HomeRaceActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release(); // Giải phóng MediaPlayer khi Activity bị hủy
         }
+        SharedPreferences sharedPreferences = getSharedPreferences("game_data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("current_money", currentMoney);
+        editor.apply();
     }
 }

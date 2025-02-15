@@ -1,5 +1,7 @@
 package com.example.miniprojectracing;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -15,7 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.HashMap;
 import java.util.Map;
-
+import com.example.miniprojectracing.HomeRaceActivity;
 public class HistoryActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
@@ -33,9 +35,19 @@ public class HistoryActivity extends AppCompatActivity {
         tvTotalRaces = findViewById(R.id.tv_total_races);
         btnBackToRace = findViewById(R.id.btn_back_to_race);
 
-        btnBackToRace.setOnClickListener(v -> finish()); // Quay lại trang trước đó
+        btnBackToRace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, HomeRaceActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                finish(); // Đóng HistoryActivity
+            }
+        });
+
 
         loadRaceHistory();
+
     }
 
     private void loadRaceHistory() {
@@ -93,5 +105,6 @@ public class HistoryActivity extends AppCompatActivity {
         horseWinCount.put(winningHorse, horseWinCount.getOrDefault(winningHorse, 0) + 1);
         totalRaces++;
     }
+
 }
 
