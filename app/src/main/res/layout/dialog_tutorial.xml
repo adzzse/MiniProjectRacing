@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_background"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horse Racing Game Rules"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:textColor="#3E4C69"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/tv_tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginBottom="20dp"
+        android:text="1. Start with 1,000 coins.\n2. Bet on one or multiple horses within your available coins.\n3. Results:\n\tWin: Earn 2x the bet amount on the winning horse.\n\tLose: Lose the bet amount on losing horses.\n4. Press Start to continue with your remaining coins.\n5. Press Reset to restore 1,000 coins and restart."
+        android:textColor="#3E4C69"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tutorial"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_background"
+        android:padding="10dp"
+        android:text="Close"
+        android:textColor="#FDFCFD" />
+
+</RelativeLayout>
