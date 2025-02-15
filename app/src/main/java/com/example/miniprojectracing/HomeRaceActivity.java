@@ -1,5 +1,6 @@
 package com.example.miniprojectracing;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -83,8 +84,21 @@ public class HomeRaceActivity extends AppCompatActivity {
         btnGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent guideIntent = new Intent(HomeRaceActivity.this, GuideActivity.class);
-                startActivity(guideIntent);
+                // Create a custom dialog
+                final Dialog dialog = new Dialog(HomeRaceActivity.this);
+                dialog.setContentView(R.layout.dialog_tutorial);
+
+                // Set up the close button
+                Button btnClose = dialog.findViewById(R.id.btn_close);
+                btnClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // Show the dialog
+                dialog.show();
             }
         });
 
