@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/login_bg"> <!-- Thêm hình nền -->
 
     <EditText
         android:id="@+id/et_username"
@@ -16,15 +17,15 @@
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_marginTop="16dp" />
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_gravity="center" />
+        android:text="Login" />
 </LinearLayout>

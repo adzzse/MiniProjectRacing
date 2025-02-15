@@ -1,6 +1,7 @@
 package com.example.miniprojectracing;
 
 import android.content.Intent;
+import android.media.MediaPlayer;  // Thêm import MediaPlayer
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
+    private MediaPlayer mediaPlayer;  // Biến MediaPlayer để phát nhạc nền
 
     // Fake data (username and password)
     private HashMap<String, String> fakeUsers;
@@ -35,6 +37,11 @@ public class LoginActivity extends AppCompatActivity {
         fakeUsers.put("user2", "password2");
         fakeUsers.put("user3", "password3");
 
+        // Khởi tạo MediaPlayer để phát nhạc nền
+        mediaPlayer = MediaPlayer.create(this, R.raw.nhac);  // Nhạc nền (tên tệp nhạc trong raw)
+        mediaPlayer.setLooping(true);  // Đặt nhạc lặp lại liên tục
+        mediaPlayer.start();  // Bắt đầu phát nhạc nền
+
         // Handle login
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,5 +61,32 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // Đảm bảo nhạc được tạm dừng khi Activity bị pause
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause(); // Tạm dừng nhạc khi Activity bị pause
+        }
+    }
+
+    // Tiếp tục phát nhạc khi Activity quay lại
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null) {
+            mediaPlayer.start(); // Tiếp tục phát nhạc khi Activity trở lại
+        }
+    }
+
+    // Giải phóng tài nguyên khi Activity bị hủy
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release(); // Giải phóng MediaPlayer khi Activity bị hủy
+        }
     }
 }
