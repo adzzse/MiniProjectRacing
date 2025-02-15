@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/tv_total_races"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tổng số trận đua: 0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10dp"/>
+
+    <!-- Bảng lịch sử đua -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lịch sử đua"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:background="@android:color/white"
+            android:padding="8dp">
+        </TableLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_back_to_race"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quay lại đua"
+        android:backgroundTint="#673AB7"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>
