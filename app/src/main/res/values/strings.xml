@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">MiniProjectRacing</string>
     <string-array name="horse_names">
-        <item>Ngựa 1</item>
-        <item>Ngựa 2</item>
-        <item>Ngựa 3</item>
-        <item>Ngựa 4</item>
+        <item>Wheelchair 1</item>
+        <item>Wheelchair 2</item>
+        <item>Wheelchair 3</item>
+        <item>Wheelchair 4</item>
     </string-array>
 </resources>
