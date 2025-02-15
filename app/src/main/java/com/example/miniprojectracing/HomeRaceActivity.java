@@ -29,8 +29,7 @@ public class HomeRaceActivity extends AppCompatActivity {
     private TextView tvMoney, tvRaceResult;
     private EditText etBetMoney;
     private Spinner spinnerHorses;
-    private Button btnStart, btnDeposit, btnGuide, btnReset, btnLogout;
-
+    private Button btnStart, btnDeposit, btnGuide, btnReset, btnHistory;
     private int currentMoney = 1000; // Số tiền giả định ban đầu
 
     @Override
@@ -51,6 +50,7 @@ public class HomeRaceActivity extends AppCompatActivity {
         btnDeposit = findViewById(R.id.btn_deposit);
         btnGuide = findViewById(R.id.btn_guide);
         btnReset = findViewById(R.id.btn_reset);
+        btnHistory = findViewById(R.id.btn_history);
         tvRaceResult = findViewById(R.id.tv_race_result);
         gifThumb1 = findViewById(R.id.wheelchair_gif1);
         gifThumb2 = findViewById(R.id.wheelchair_gif2);
@@ -75,12 +75,9 @@ public class HomeRaceActivity extends AppCompatActivity {
         spinnerHorses.setAdapter(adapter);
 
         // Chuyển đến màn hình nạp tiền
-        btnDeposit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent depositIntent = new Intent(HomeRaceActivity.this, DepositActivity.class);
-                startActivityForResult(depositIntent, 1);
-            }
+        btnDeposit.setOnClickListener(v -> {
+            Intent depositIntent = new Intent(HomeRaceActivity.this, DepositActivity.class);
+            startActivityForResult(depositIntent, 1);
         });
         //xử lý nút âm thanh
         btnToggleSound.setOnClickListener(v -> {
@@ -109,6 +106,7 @@ public class HomeRaceActivity extends AppCompatActivity {
 
 
         // Chuyển đến màn hình hướng dẫn
+
         btnGuide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,8 +231,15 @@ public class HomeRaceActivity extends AppCompatActivity {
                         } else {
                             // Tiếp tục cập nhật mọi 100ms
                             handler.postDelayed(this, 100);
+
                         }
+
+                        tvRaceResult.setText(winningHorse + " thắng! " + getWinMessage(selectedHorse, winningHorse));
+                        HistoryActivity.updateRaceHistory(winningHorse);
+                    } else {
+                        handler.postDelayed(this, 100);
                     }
+
                 };
                 //Cập nhật lại seekbar
                 sbHorse1.setProgress(0);
@@ -250,7 +255,6 @@ public class HomeRaceActivity extends AppCompatActivity {
         int newX = seekBar.getPaddingLeft() + (seekBarWidth * progress / seekBar.getMax());
         gif.setX(newX - (gif.getWidth() / 2));
     }
-
 
     private String getWinMessage(String selectedHorse, String winningHorse, int betMoney, boolean isWin, int winAmount) {
         if (isWin) {
@@ -273,7 +277,6 @@ public class HomeRaceActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            // Cập nhật tiền sau khi nạp
             int depositedMoney = data.getIntExtra("depositedMoney", 0);
             currentMoney += depositedMoney;
             tvMoney.setText("Money: " + currentMoney);

@@ -25,6 +25,7 @@
         <activity android:name=".GuideActivity" android:exported="false"/>
         <activity android:name=".DepositActivity" android:exported="false"/>
         <activity android:name=".HomeRaceActivity" android:exported="false"/>
+        <activity android:name=".HistoryActivity" android:exported="false"/>
     </application>
 
 </manifest>
