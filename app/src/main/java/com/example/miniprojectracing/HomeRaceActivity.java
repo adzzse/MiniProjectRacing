@@ -1,7 +1,6 @@
 package com.example.miniprojectracing;
 
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.Nullable
+        ;
 import androidx.appcompat.app.AppCompatActivity;
 
 import pl.droidsonroids.gif.GifImageView;
+
+import android.animation.ObjectAnimator;
 
 public class HomeRaceActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer, victorySound, loseSound;
@@ -31,12 +33,19 @@ public class HomeRaceActivity extends AppCompatActivity {
     private Button btnStart, btnDeposit, btnGuide, btnReset, btnLogout, btnHistory;
     private int currentMoney = 1000; // Số tiền ban đầu
     private EditText etBet1, etBet2, etBet3, etBet4; // Tiền cược cho từng con
+    private View raceContainer, rootLayout;
+    private boolean isRacing = false; // Trạng thái cuộc đua
+    private Handler handler = new Handler();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_race);
+
+        raceContainer = findViewById(R.id.race_container);
+        rootLayout = findViewById(R.id.root_layout);
+
         // Kết nối UI
         btnLogout = findViewById(R.id.btn_logout);
         tvMoney = findViewById(R.id.tv_money);
@@ -123,6 +132,12 @@ public class HomeRaceActivity extends AppCompatActivity {
 
         // Reset cuộc đua về mặc định
         btnReset.setOnClickListener(v -> {
+
+            handler.removeCallbacksAndMessages(null); // Dừng ngay lập tức các tiến trình trong handler
+            isRacing = false; // Dừng cuộc đua
+
+            zoomRaceTrack(false);
+
             currentMoney = 1000; // Reset tiền về 1000 coins
             sbHorse1.setProgress(0);
             sbHorse2.setProgress(0);
@@ -132,12 +147,33 @@ public class HomeRaceActivity extends AppCompatActivity {
             etBet2.setText("");
             etBet3.setText("");
             etBet4.setText("");
+
             tvMoney.setText("Money: " + currentMoney);
+
+        updateGifPosition(gifThumb1, sbHorse1.getProgress(), sbHorse1);
+        updateGifPosition(gifThumb2, sbHorse2.getProgress(), sbHorse2);
+        updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
+        updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
+
+
+        etBet1.setVisibility(View.VISIBLE);
+            etBet2.setVisibility(View.VISIBLE);
+            etBet3.setVisibility(View.VISIBLE);
+            etBet4.setVisibility(View.VISIBLE);
+
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer = MediaPlayer.create(HomeRaceActivity.this, R.raw.music);
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
+            }
         });
 
 
         // Bắt đầu cuộc đua
-        btnStart.setOnClickListener(v -> startRace());
+        btnStart.setOnClickListener(v -> {
+            startRace();
+        });
+
     }
 
     private void startRace() {
@@ -153,30 +189,42 @@ public class HomeRaceActivity extends AppCompatActivity {
 
         // Kiểm tra cược hợp lệ
         if (totalBet == 0) {
-            Toast.makeText(this, "Nhập số tiền cược!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Enter the bet amount!", Toast.LENGTH_SHORT).show();
             return;
         }
 
 
         if (totalBet > currentMoney) {
-            Toast.makeText(this, "Không đủ tiền để cược!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Not enough money to place a bet!", Toast.LENGTH_SHORT).show();
             return;
         }
 
 
         // Trừ tiền cược
         currentMoney -= totalBet;
+        isRacing = true; // Cuộc đua bắt đầu
+        hideNumberColumns();  // Ẩn các ô số khi bấm Start
+        zoomRaceTrack(true); // Phóng to đường đua trước khi bắt đầu
         tvMoney.setText("Money: " + currentMoney);
 
 
-        final Handler handler = new Handler();
         final Runnable updateProgress = new Runnable() {
             @Override
             public void run() {
+
+                if (!isRacing) {
+                    handler.removeCallbacks(this); // Dừng cuộc đua nếu isRacing = false
+                    return;
+                }
                 sbHorse1.setProgress(sbHorse1.getProgress() + (int) (Math.random() * 5));
                 sbHorse2.setProgress(sbHorse2.getProgress() + (int) (Math.random() * 5));
                 sbHorse3.setProgress(sbHorse3.getProgress() + (int) (Math.random() * 5));
                 sbHorse4.setProgress(sbHorse4.getProgress() + (int) (Math.random() * 5));
+
+                updateGifPosition(gifThumb1, sbHorse1.getProgress(), sbHorse1);
+                updateGifPosition(gifThumb2, sbHorse2.getProgress(), sbHorse2);
+                updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
+                updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
 
 
                 if (sbHorse1.getProgress() >= 300 || sbHorse2.getProgress() >= 300 ||
@@ -210,21 +258,20 @@ public class HomeRaceActivity extends AppCompatActivity {
                         loseAmount = betHorse1 + betHorse2 + betHorse3;
                     }
 
+                    isRacing = false; // Đua xong Check lai xem dung vi tri chua
+                    handler.removeCallbacks(this);
 
                     // Cộng tiền thắng vào currentMoney
                     currentMoney += winAmount;
                     tvMoney.setText("Money: " + currentMoney); // Cập nhật lại số tiền hiển thị
 
-
 // Ghi nhận lịch sử đua
                     //  HistoryActivity.updateRaceHistory(winningHorse);
                     HistoryActivity.updateRaceHistory(HomeRaceActivity.this, winningHorse);
 
-
 // Hiển thị kết quả
                     showRaceResultDialog(winningHorse, winAmount, loseAmount, currentMoney);
                     handler.removeCallbacks(this);
-
 
                 } else {
                     handler.postDelayed(this, 100);
@@ -237,7 +284,14 @@ public class HomeRaceActivity extends AppCompatActivity {
         sbHorse2.setProgress(0);
         sbHorse3.setProgress(0);
         sbHorse4.setProgress(0);
+        isRacing = true;
         handler.post(updateProgress);
+    }
+
+    public void updateGifPosition(GifImageView gif, int progress, SeekBar seekBar) {
+        int seekBarWidth = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
+        int newX = seekBar.getPaddingLeft() + (seekBarWidth * progress / seekBar.getMax());
+        gif.setX(newX - (gif.getWidth() / 2));
     }
 
 
@@ -264,26 +318,59 @@ public class HomeRaceActivity extends AppCompatActivity {
 
 
         tvWinner.setText("Winner: " + winningHorse);
-        tvWin.setText("Thắng: " + winAmount);
-        tvLose.setText("Thua: " + loseAmount);
-        tvBalance.setText("Số dư hiện tại: " + currentBalance);
+        tvWin.setText("Win: " + winAmount);
+        tvLose.setText("Loose: " + loseAmount);
+        tvBalance.setText("Current balance: " + currentBalance);
 
 
         btnClose.setOnClickListener(v -> {
             dialog.dismiss();
-            resetBets();// Reset tiền cược về 0 sau khi đóng popup
+            zoomRaceTrack(false); // Thu nhỏ lại sau khi đóng thông báo kết quả
+            etBet1.setVisibility(View.VISIBLE);
+            etBet2.setVisibility(View.VISIBLE);
+            etBet3.setVisibility(View.VISIBLE);
+            etBet4.setVisibility(View.VISIBLE);
+
+            sbHorse1.setProgress(0);
+            sbHorse2.setProgress(0);
+            sbHorse3.setProgress(0);
+            sbHorse4.setProgress(0);
+
+            etBet1.setText("");
+            etBet2.setText("");
+            etBet3.setText("");
+            etBet4.setText("");
+
+            updateGifPosition(gifThumb1, sbHorse1.getProgress(), sbHorse1);
+            updateGifPosition(gifThumb2, sbHorse2.getProgress(), sbHorse2);
+            updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
+            updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
+
+
         });
 
-
         dialog.show();
+
+    }
+
+    private void hideNumberColumns() {
+        etBet1.setVisibility(View.GONE);
+        etBet2.setVisibility(View.GONE);
+        etBet3.setVisibility(View.GONE);
+        etBet4.setVisibility(View.GONE);
     }
 
 
-    private void resetBets() {
-        etBet1.setText("");
-        etBet2.setText("");
-        etBet3.setText("");
-        etBet4.setText("");
+    private void zoomRaceTrack(boolean zoomIn) {
+        float scale = zoomIn ? 1.3f : 1.0f;
+
+        // Phóng to hoặc thu nhỏ container đường đua
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(raceContainer, "scaleX", scale);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(raceContainer, "scaleY", scale);
+        scaleX.setDuration(500);
+        scaleY.setDuration(500);
+        scaleX.start();
+        scaleY.start();
     }
 
 
@@ -304,6 +391,8 @@ public class HomeRaceActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release(); // Giải phóng MediaPlayer khi Activity bị hủy
         }
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("game_data", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("current_money", currentMoney);

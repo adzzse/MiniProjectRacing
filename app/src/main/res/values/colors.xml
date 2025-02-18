@@ -2,4 +2,5 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="default_background">#075687</color> <!-- Replace #FFFFFF with your desired color -->
 </resources>

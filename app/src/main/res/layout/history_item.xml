@@ -30,6 +30,6 @@
         android:id="@+id/tv_total_wins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thắng: 0"/>
+        android:text="Win: 0"/>
 
 </LinearLayout>

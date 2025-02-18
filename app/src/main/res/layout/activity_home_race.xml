@@ -1,242 +1,234 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
     android:padding="16dp">
 
-    <!-- Horse seekbars -->
+    <!-- Container chứa đường đua và ngựa để phóng to khi đua -->
+    <RelativeLayout
+        android:id="@+id/race_container"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="60dp">
+
+        <SeekBar
+            android:id="@+id/sb_horse1"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="192dp"
+            android:max="300"
+            android:progress="0"
+            android:progressDrawable="@drawable/bg_custom_seekbar"
+            android:thumb="@null" />
+
+        <SeekBar
+            android:id="@+id/sb_horse2"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sb_horse1"
+            android:layout_marginTop="50dp"
+            android:max="300"
+            android:progress="0"
+            android:progressDrawable="@drawable/bg_custom_seekbar"
+            android:thumb="@null" />
+
+        <SeekBar
+            android:id="@+id/sb_horse3"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sb_horse2"
+            android:layout_marginTop="50dp"
+            android:max="300"
+            android:progress="0"
+            android:progressDrawable="@drawable/bg_custom_seekbar"
+            android:thumb="@null" />
+
+        <SeekBar
+            android:id="@+id/sb_horse4"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sb_horse3"
+            android:layout_marginTop="50dp"
+            android:max="300"
+            android:progress="0"
+            android:progressDrawable="@drawable/bg_custom_seekbar"
+            android:thumb="@null" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/wheelchair_gif1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btn_history"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="152dp"
+            android:src="@drawable/wheelchair" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/wheelchair_gif2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/wheelchair_gif1"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="9dp"
+            android:src="@drawable/wheelchair" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/wheelchair_gif3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/wheelchair_gif2"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="9dp"
+            android:src="@drawable/wheelchair" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/wheelchair_gif4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/wheelchair_gif3"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="9dp"
+            android:src="@drawable/wheelchair" />
+    </RelativeLayout>
+
+    <!-- Các nút điều khiển -->
+
     <TextView
         android:id="@+id/tv_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_history"
         android:layout_alignParentTop="true"
         android:layout_marginTop="107dp"
         android:text="Money: 1000"
+        android:textSize="18dp"
         android:textStyle="bold" />
 
-
-    <SeekBar
-        android:id="@+id/sb_horse1"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="158dp"
-        android:max="300"
-        android:progress="0"
-        android:progressDrawable="@drawable/bg_custom_seekbar"
-        android:thumb="@null" />
-
-
-    <SeekBar
-        android:id="@+id/sb_horse2"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sb_horse1"
-        android:layout_marginTop="52dp"
-        android:max="300"
-        android:progress="0"
-        android:progressDrawable="@drawable/bg_custom_seekbar"
-        android:thumb="@null" />
-
-
-    <SeekBar
-        android:id="@+id/sb_horse3"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sb_horse2"
-        android:layout_marginTop="53dp"
-        android:max="300"
-        android:progress="0"
-        android:progressDrawable="@drawable/bg_custom_seekbar"
-        android:thumb="@null" />
-
-
-    <SeekBar
-        android:id="@+id/sb_horse4"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sb_horse3"
-        android:layout_marginTop="54dp"
-        android:max="300"
-        android:progress="0"
-        android:progressDrawable="@drawable/bg_custom_seekbar"
-        android:thumb="@null" />
-
+    <ImageButton
+        android:id="@+id/btn_toggle_sound"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_above="@+id/editTextNumber1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="130dp"
+        android:background="@null"
+        android:contentDescription="Sound Button"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_sound_on" />
 
     <Button
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sb_horse4"
-        android:layout_marginTop="53dp"
+        android:layout_below="@id/race_container"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="60dp"
         android:text="Start" />
-
 
     <Button
         android:id="@+id/btn_deposit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sb_horse4"
+        android:layout_below="@+id/race_container"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="60dp"
         android:layout_toEndOf="@+id/btn_start"
         android:layout_weight="1"
         android:text="Top up" />
-
 
     <Button
         android:id="@+id/btn_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sb_horse4"
+        android:layout_below="@+id/race_container"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="60dp"
         android:layout_toEndOf="@+id/btn_deposit"
         android:layout_weight="1"
         android:text="Tutorial" />
 
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/race_container"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toEndOf="@+id/btn_guide"
+        android:text="Reset" />
 
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="660dp"
-        android:layout_marginEnd="24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="15dp"
         android:text="Logout" />
-
-    <Button
-        android:id="@+id/btn_reset"
-        android:layout_width="113dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sb_horse4"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toEndOf="@+id/btn_guide"
-        android:layout_weight="1"
-        android:text="Reset" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/wheelchair_gif1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/btn_history"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="86dp"
-        android:src="@drawable/wheelchair" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/wheelchair_gif2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/wheelchair_gif1"
-        android:layout_marginTop="7dp"
-        android:src="@drawable/wheelchair" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/wheelchair_gif3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/wheelchair_gif2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="13dp"
-        android:src="@drawable/wheelchair" />
-
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/wheelchair_gif4"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/wheelchair_gif3"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="-3dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/wheelchair" />
-
-
-    <ImageButton
-        android:id="@+id/btn_toggle_sound"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/btn_logout"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="17dp"
-        android:background="@null"
-        android:contentDescription="Sound Button"
-        android:src="@drawable/ic_sound_on" />
-
 
     <EditText
         android:id="@+id/editTextNumber1"
-        android:layout_width="10dp"
-        android:layout_height="32dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/editTextNumber2"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="165dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toRightOf="@+id/sb_horse1"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="@color/black"
         android:ems="10"
         android:inputType="number" />
-
 
     <EditText
         android:id="@+id/editTextNumber2"
-        android:layout_width="61dp"
-        android:layout_height="32dp"
-        android:layout_below="@+id/editTextNumber1"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/editTextNumber3"
         android:layout_alignParentEnd="true"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toRightOf="@+id/sb_horse2"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="@color/black"
         android:ems="10"
         android:inputType="number" />
-
 
     <EditText
         android:id="@+id/editTextNumber3"
-        android:layout_width="61dp"
-        android:layout_height="32dp"
-        android:layout_below="@+id/editTextNumber2"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/editTextNumber4"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toRightOf="@+id/sb_horse3"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="@color/black"
         android:ems="10"
         android:inputType="number" />
-
 
     <EditText
         android:id="@+id/editTextNumber4"
-        android:layout_width="61dp"
-        android:layout_height="32dp"
-        android:layout_below="@+id/editTextNumber3"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/btn_reset"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toRightOf="@+id/sb_horse4"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="93dp"
         android:backgroundTint="@color/black"
         android:ems="10"
         android:inputType="number" />
-
 
     <Button
         android:id="@+id/btn_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xem Lịch Sử" />
-
+        android:text="Win Rates" />
 
 </RelativeLayout>

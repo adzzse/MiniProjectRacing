@@ -1,14 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#A1DCFF">
 
     <EditText
         android:id="@+id/et_deposit_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:hint="Số tiền"
+        android:hint="Money"
         android:layout_marginTop="20dp" />
 
     <Button

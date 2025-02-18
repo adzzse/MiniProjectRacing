@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#F5F5F5">
+    android:background="#A1DCFF">
 
     <TextView
         android:id="@+id/tv_total_races"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tổng số trận đua: 0"
+        android:text="Total races: 0"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lịch sử đua"
+        android:text="Race history"
         android:textSize="16sp"
         android:textStyle="bold"
         android:paddingTop="10dp"
@@ -46,7 +46,7 @@
         android:id="@+id/btn_back_to_race"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quay lại đua"
+        android:text="Back"
         android:backgroundTint="#673AB7"
         android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
