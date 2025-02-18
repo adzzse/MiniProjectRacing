@@ -1,6 +1,4 @@
 package com.example.miniprojectracing;
-
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,13 +12,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
-
-import androidx.annotation.Nullable
-        ;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import pl.droidsonroids.gif.GifImageView;
-
 import android.animation.ObjectAnimator;
 
 public class HomeRaceActivity extends AppCompatActivity {
@@ -75,8 +69,6 @@ public class HomeRaceActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.music);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-
-
         victorySound = MediaPlayer.create(this, R.raw.victory);
         loseSound = MediaPlayer.create(this, R.raw.lose);
 
@@ -155,51 +147,37 @@ public class HomeRaceActivity extends AppCompatActivity {
         updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
         updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
 
-
         etBet1.setVisibility(View.VISIBLE);
             etBet2.setVisibility(View.VISIBLE);
             etBet3.setVisibility(View.VISIBLE);
             etBet4.setVisibility(View.VISIBLE);
-
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer = MediaPlayer.create(HomeRaceActivity.this, R.raw.music);
                 mediaPlayer.setLooping(true);
                 mediaPlayer.start();
             }
         });
-
-
         // Bắt đầu cuộc đua
         btnStart.setOnClickListener(v -> {
             startRace();
         });
-
     }
-
     private void startRace() {
         // Lấy số tiền cược từng con
         int betHorse1 = parseBet(etBet1.getText().toString());
         int betHorse2 = parseBet(etBet2.getText().toString());
         int betHorse3 = parseBet(etBet3.getText().toString());
         int betHorse4 = parseBet(etBet4.getText().toString());
-
-
         int totalBet = betHorse1 + betHorse2 + betHorse3 + betHorse4;
-
-
         // Kiểm tra cược hợp lệ
         if (totalBet == 0) {
             Toast.makeText(this, "Enter the bet amount!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
         if (totalBet > currentMoney) {
             Toast.makeText(this, "Not enough money to place a bet!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
         // Trừ tiền cược
         currentMoney -= totalBet;
         isRacing = true; // Cuộc đua bắt đầu
@@ -319,7 +297,20 @@ public class HomeRaceActivity extends AppCompatActivity {
 
         tvWinner.setText("Winner: " + winningHorse);
         tvWin.setText("Win: " + winAmount);
+        if(winAmount > 0){
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
+            victorySound.start();
+        }
         tvLose.setText("Loose: " + loseAmount);
+        if(loseAmount > 0){
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
+            loseSound.start();
+
+        }
         tvBalance.setText("Current balance: " + currentBalance);
 
 
@@ -346,7 +337,7 @@ public class HomeRaceActivity extends AppCompatActivity {
             updateGifPosition(gifThumb3, sbHorse3.getProgress(), sbHorse3);
             updateGifPosition(gifThumb4, sbHorse4.getProgress(), sbHorse4);
 
-
+            mediaPlayer.start();
         });
 
         dialog.show();
