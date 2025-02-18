@@ -17,7 +17,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.HashMap;
 import java.util.Map;
+import android.util.Log; // Để debug
 import com.example.miniprojectracing.HomeRaceActivity;
+import android.content.Context;
+
 public class HistoryActivity extends AppCompatActivity {
 
     private TableLayout tableLayout;
@@ -51,13 +54,16 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void loadRaceHistory() {
+        SharedPreferences sharedPreferences = getSharedPreferences("race_history", MODE_PRIVATE);
+        totalRaces = sharedPreferences.getInt("totalRaces", 0);
+
         tvTotalRaces.setText("Tổng số trận đua: " + totalRaces);
         tvTotalRaces.setGravity(Gravity.CENTER);
 
         tableLayout.removeAllViews();
 
-        for (String horse : new String[]{"Ngựa 1", "Ngựa 2", "Ngựa 3", "Ngựa 4"}) {
-            int wins = horseWinCount.getOrDefault(horse, 0);
+        for (String horse : new String[]{"Wheelchair 1", "Wheelchair 2", "Wheelchair 3", "Wheelchair 4"}) {
+            int wins = sharedPreferences.getInt(horse, 0);
             double winRate = (totalRaces == 0) ? 0 : ((double) wins / totalRaces) * 100;
 
             TableRow row = new TableRow(this);
@@ -75,18 +81,13 @@ public class HistoryActivity extends AppCompatActivity {
             progressBar.setMax(100);
             progressBar.setProgress((int) winRate);
             progressBar.setScaleY(4f);
-            TableRow.LayoutParams params = new TableRow.LayoutParams(450, 40); // Đặt chiều rộng và chiều cao cụ thể
+            TableRow.LayoutParams params = new TableRow.LayoutParams(450, 40);
             params.setMargins(20, 10, 30, 10);
             progressBar.setLayoutParams(params);
 
-            // Thiết lập màu nền cho thanh tiến độ
             LayerDrawable progressDrawable = (LayerDrawable) progressBar.getProgressDrawable();
             Drawable progressLayer = progressDrawable.getDrawable(1);
-            if (winRate > 0) {
-                progressLayer.setTint(Color.GREEN);
-            } else {
-                progressLayer.setTint(Color.LTGRAY);
-            }
+            progressLayer.setTint(winRate > 0 ? Color.GREEN : Color.LTGRAY);
 
             TextView tvWinRate = new TextView(this);
             tvWinRate.setText(String.format("%.2f%%", winRate));
@@ -98,12 +99,24 @@ public class HistoryActivity extends AppCompatActivity {
             row.addView(tvWinRate);
             tableLayout.addView(row);
         }
-        tableLayout.requestLayout(); // Cập nhật lại giao diện
+        tableLayout.requestLayout();
     }
 
-    public static void updateRaceHistory(String winningHorse) {
+
+    public static void updateRaceHistory(Context context, String winningHorse) {
         horseWinCount.put(winningHorse, horseWinCount.getOrDefault(winningHorse, 0) + 1);
         totalRaces++;
+
+        // Ghi dữ liệu vào SharedPreferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences("race_history", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("totalRaces", totalRaces);
+        for (Map.Entry<String, Integer> entry : horseWinCount.entrySet()) {
+            editor.putInt(entry.getKey(), entry.getValue());
+        }
+        editor.apply();
+
+        Log.d("HistoryUpdate", "Ngựa thắng: " + winningHorse + " | Tổng số ván đua: " + totalRaces);
     }
 
 }

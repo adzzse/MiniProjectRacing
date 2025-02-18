@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Fake user data
         fakeUsers = new HashMap<>();
-        fakeUsers.put("user1", "password1");
+        fakeUsers.put("a", "a");
         fakeUsers.put("user2", "password2");
         fakeUsers.put("user3", "password3");
 
