@@ -33,4 +33,10 @@ public class DepositActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Do not stop music if switching to another activity
+    }
+
 }

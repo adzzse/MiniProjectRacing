@@ -108,6 +108,11 @@ public class HomeRaceActivity extends AppCompatActivity {
             editor.apply();
             Intent loginIntent = new Intent(HomeRaceActivity.this, LoginActivity.class);
             startActivity(loginIntent);
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null; // Set to null to prevent errors
+            }
             finish();
         });
 
@@ -379,14 +384,19 @@ public class HomeRaceActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null) {
-            mediaPlayer.release(); // Giải phóng MediaPlayer khi Activity bị hủy
-        }
-
 
         SharedPreferences sharedPreferences = getSharedPreferences("game_data", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("current_money", currentMoney);
         editor.apply();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+            mediaPlayer.start();
+        }
+    }
+    // Giải phóng tài nguyên khi Activity bị hủy
+
 }
